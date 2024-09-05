@@ -1,5 +1,8 @@
 module VisUtils
 
-greet() = print("Hello World!")
+const VecIO = AbstractVector
+const MatIO = AbstractMatrix
+
+include("./StatsVector.jl")
 
 end # module VisUtils
