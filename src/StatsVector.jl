@@ -1,4 +1,4 @@
-export StatsVector
+export StatsVector, welford_step
 
 # Statistics (vectors) for band plotting
 struct StatsVector
@@ -16,7 +16,7 @@ struct StatsVector
 		# use μpσ as std buffer
 		for j in eachindex(1:ncol)
 			@inbounds for i in eachindex(avg)
-				avg[i], μpσ[i] = welfordStep(avg[i], μpσ[i], dat[i,j], j)
+				avg[i], μpσ[i] = welford_step(avg[i], μpσ[i], dat[i,j], j)
 			end
 		end
 
@@ -31,4 +31,23 @@ struct StatsVector
 
 		return new(avg, μpσ, μmσ)
 	end
+end
+
+function welford_step(μ::Real, s::Real, v::Real, n::Real)
+	#=
+	Perform a single step of Welford algorithm (sample mean and variance)
+	
+		welfordStep(μ::Real, s::Real, v::Real, n::Real)
+	
+	Params
+	- `μ` := sample mean
+	- `s` := sample variance
+	- `v` := n-th value
+	- `n` := n-th count
+	=#
+	isone(n) && return v, zero(v)
+	s = s * (n - 2)
+	m = μ + (v - μ) / n
+	s = s + (v - μ) * (v - m)
+	return m, s / (n - 1)
 end
