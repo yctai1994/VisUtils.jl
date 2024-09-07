@@ -2,3 +2,6 @@ name = "VisUtils"
 uuid = "51775146-02dc-4794-816b-bc508060704d"
 authors = ["yctai1994 <yctai.git@gmail.com>"]
 version = "0.1.0"
+
+[deps]
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
